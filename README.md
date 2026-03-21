@@ -1,6 +1,8 @@
-# Portfolio Website
+# Account Project
 
-This is a Sign-In/Register account website built with Next.js and Tailwind CSS. This demonstate how to setup a simple account sign-in/registration page. 
+This is a Sign-In/Register account website built with Next.js and Tailwind CSS. This is to demonstate on how to setup a simple account sign-in/registration page. An email with a link to validate is sent to the user once a registration is submitted. Once the account is validated, the user can sign in to view their profile page. 
+
+A "delete account" button is available in the user's profile page. Account is signed off automatically and deleted from database once it is clicked.
 
 ## Installation
 
