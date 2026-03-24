@@ -16,18 +16,22 @@ export function CardHeader({
 }
 
 export function CardFooter({
-    text
+    text,
+    link,
+    linktext,
 }: {
     text: string;
+    link: string;
+    linktext: string;
 }) {
     return (
         <div className="text-center">
             <p className="text-[#718096] text-sm">{ text }
             <Link
-                href=""
+                href={ link }
                 className="text-[#3b82f6] no-underline font-medium"
             >
-                Create one
+                { linktext }
             </Link>
             </p>
         </div>
