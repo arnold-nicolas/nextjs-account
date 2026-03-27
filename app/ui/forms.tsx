@@ -19,7 +19,7 @@ export function LoginForm() {
                     Password
                 </label>
             </div>
-            <SubmitButton>Sign In</SubmitButton>
+            <SubmitButton type="submit">Sign In</SubmitButton>
         </form>
     );
 }
@@ -46,7 +46,7 @@ export function SignUpForm() {
                     Password
                 </label>
             </div>
-            <SubmitButton>Sign Up</SubmitButton>
+            <SubmitButton type="submit">Sign Up</SubmitButton>
         </form>
     );
 }
