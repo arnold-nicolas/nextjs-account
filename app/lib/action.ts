@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
-import { fetchUserByEmail } from '@/app/lib/user';
+import { fetchUserByEmail, addUser } from '@/app/lib/user';
 
 const FormSchema = z.object({
     id: z.string(),
@@ -15,14 +15,6 @@ const FormSchema = z.object({
 
 const CreateAccount = FormSchema.omit({ id: true, date: true });
 
-export type User = {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    date: string;
-}
-
 export async function createAccount(formData: FormData) {
     const { name, email, password } = CreateAccount.parse({
         name: formData.get('name'),
@@ -31,14 +23,14 @@ export async function createAccount(formData: FormData) {
     });
 
     const user = await fetchUserByEmail(email);
-    /* Check for dupe account first
+    /* Check for dupe account first */
     if (user) {
         redirect('/');
-    } */
+    }
 
     const createDate = new Date().toISOString().split('T')[0];
     const hashedPassword = await bcrypt.hash(password, 10);
-    const id = '410544b2-4001-4271-9855-fec4b6a6442a';
+    const id = '2f4890b7-7d08-4cd5-af8b-c36d56d13653';
 
     /*
     try {

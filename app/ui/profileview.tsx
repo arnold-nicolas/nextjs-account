@@ -1,14 +1,8 @@
 import { fetchUserById } from '@/app/lib/user';
-
-type User = {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-};
+import { UserTable } from "@/app/lib/server/definitions";
 
 export default async function ProfileView({id}: {id: string}) {
-  const user: User[] = await Promise.all([
+  const user: UserTable[] = await Promise.all([
     fetchUserById(id),
   ]);
   const formatKey = (key: string) =>
