@@ -2,7 +2,7 @@
 
 import SubmitButton from "@/app/ui/button";
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
-import { createAccount } from "@/app/lib/action";
+import { createAccount } from "@/app/lib/user";
 
 export function LoginForm() {
     return (

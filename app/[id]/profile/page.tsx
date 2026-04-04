@@ -1,9 +1,19 @@
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import Profile from '@/app/ui/profileview';
+import { notFound } from 'next/navigation';
+import { fetchUserById } from '@/app/lib/user';
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
     const id = params.id;
+    const user = await Promise.all([
+        fetchUserById(id),
+    ]);
+
+    if (user[0] === undefined) {
+        console.log("not found.");
+        notFound();
+    }
 
     return (
     <main className="min-h-180 flex items-center justify-center p-20 leading-[1.6]">
@@ -19,7 +29,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                     This is some information about the user.
                 </p>
             </div>
-            <Profile id={id} />
+            <Profile user={user} />
         </div>
     </main>
     );

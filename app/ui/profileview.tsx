@@ -1,14 +1,9 @@
 import { fetchUserById } from '@/app/lib/user';
-import { UserTable } from "@/app/lib/server/definitions";
+import { UserProfile } from "@/app/lib/server/definitions";
 
-export default async function ProfileView({id}: {id: string}) {
-  const user: UserTable[] = await Promise.all([
-    fetchUserById(id),
-  ]);
+export default async function ProfileView({user}: {user: UserProfile[]}) {
   const formatKey = (key: string) =>
   key.charAt(0).toUpperCase() + key.slice(1);  
-
-  console.log(user);
 
   return (
     <div className="border-t border-gray-200 px-4 py-5 sm:p-0">

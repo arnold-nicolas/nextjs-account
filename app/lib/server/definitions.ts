@@ -10,3 +10,10 @@ export type UserTable = {
     phone: string;
     date: string;
 };
+
+export type UserProfile = {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+}
