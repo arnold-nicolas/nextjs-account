@@ -11,7 +11,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     ]);
 
     if (user[0] === undefined) {
-        console.log("not found.");
         notFound();
     }
 

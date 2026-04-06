@@ -7,11 +7,30 @@ import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 
+export type State = {
+    errors?: {
+        username?: string[];
+        email?: string[];
+        password?:string[];
+    };
+    message?: string | null;
+};
+
 const FormSchema = z.object({
     id: z.string(),
-    name: z.string(),
-    email: z.email(),
-    password: z.string().min(6),
+    username: z.string({
+        error: 'Full Name is required.'
+    }),
+    email: z.email({
+        error: 'Email is required.'
+    }),
+    password: z.string().min(6, {
+        error: (iss) => {
+            iss.minimum;
+            iss.inclusive;
+            return `Password must have ${iss.minimum} characters or more.`;
+        },
+    }),
     date: z.string(),
 });
 const CreateAccount = FormSchema.omit({ id: true, date: true });
@@ -48,24 +67,36 @@ export async function fetchUserByEmail(email: string) {
         console.log(res);
         return res.rows[0];
     } catch (error) {
-        throw new Error("Database Error. Failed to fetch user.");
+        return {
+            message: "Database Error. Failed to fetch user.",
+        };
     } finally {
         client.release();
     }
 }
 
-export async function createAccount(formData: FormData) {
-    const { name, email, password } = CreateAccount.parse({
-        name: formData.get('name'),
+export async function createAccount(prevState: State, formData: FormData) {
+    const validateFields = CreateAccount.safeParse({
+        name: formData.get('username'),
         email: formData.get('email'),
         password: formData.get('password'),
     });
 
+    // If form validation fails, return errors early. Otherwise, continue.
+    if (!validateFields.success) {
+        return {
+            errors: validateFields.error.flatten().fieldErrors,
+            message: 'Missing Fields. Failed to Create Account.',
+        };
+    }
+    const { username, email, password } = validateFields.data;
     const user = await fetchUserByEmail(email);
     /* Check for dupe account first */
     if (user) {
-        redirect('/');
-    }
+        return {
+            message: 'Account Exists. Failed to Create Account.',
+        };
+     }
 
     const createDate = new Date().toISOString().split('T')[0];
     const hashedPassword = await bcrypt.hash(password, 10);
