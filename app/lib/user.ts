@@ -108,19 +108,24 @@ export async function createAccount(prevState: State, formData: FormData): Promi
 
     const createDate = new Date().toISOString().split('T')[0];
     const hashedPassword = await bcrypt.hash(password, 10);
-    /*
+    let id = '';
+    const client = await db.connect();
+
     try {
-        await sql`
-            insert into user(name, email, password, date)
-            values (${name}, ${email}, ${hashedPassword}, ${date})
-        `;
+        const res = await client.query(
+            'insert into users(name, email, password, date) values ($1, $2, $3, $4) returning id',
+            [fullname, email, hashedPassword, createDate]
+        );
+        id = res.rows[0].id;
     } catch (error) {
         console.error(error);
-        return (
-            message: 'Database Error: Failed to Create User.',
-        );
-    } */
+        return {
+            errors: {},
+            message: 'Failed to Create User.',
+        };
+    } finally {
+        client.release();
+    }
 
-    const id = '2f4890b7-7d08-4cd5-af8b-c36d56d13653';
     redirect(`/${id}/profile`);
 }
