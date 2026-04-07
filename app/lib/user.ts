@@ -9,17 +9,20 @@ import bcrypt from 'bcryptjs';
 
 export type State = {
     errors?: {
-        username?: string[];
+        fullname?: string[];
         email?: string[];
         password?:string[];
     };
     message?: string | null;
 };
 
-const FormSchema = z.object({
-    id: z.string(),
-    username: z.string({
-        error: 'Full Name is required.'
+const User = z.object({
+    id: z.uuid(),
+    fullname: z.string().min(3, {
+        error: (iss) => {
+            iss.minimum;
+            return 'Full Name is required.';
+        },
     }),
     email: z.email({
         error: 'Email is required.'
@@ -33,7 +36,7 @@ const FormSchema = z.object({
     }),
     date: z.string(),
 });
-const CreateAccount = FormSchema.omit({ id: true, date: true });
+const CreateAccount = User.omit({ id: true, date: true });
 
 const defaultUserData = [
     {
@@ -64,7 +67,6 @@ export async function fetchUserByEmail(email: string) {
     const client = await db.connect();
     try {
         const res = await client.query('select id from users where email = $1', [email]);
-        console.log(res);
         return res.rows[0];
     } catch (error) {
         return {
@@ -75,26 +77,32 @@ export async function fetchUserByEmail(email: string) {
     }
 }
 
-export async function createAccount(prevState: State, formData: FormData) {
+export async function createAccount(prevState: State, formData: FormData): Promise<State> {
     const validateFields = CreateAccount.safeParse({
-        name: formData.get('username'),
+        fullname: formData.get('fullname'),
         email: formData.get('email'),
         password: formData.get('password'),
     });
 
     // If form validation fails, return errors early. Otherwise, continue.
     if (!validateFields.success) {
+        const err = z.treeifyError(validateFields.error).properties;
         return {
-            errors: validateFields.error.flatten().fieldErrors,
-            message: 'Missing Fields. Failed to Create Account.',
+            errors: {
+                fullname: err?.fullname?.errors,
+                email: err?.email?.errors,
+                password:err?.password?.errors,
+            },
+            message: 'Invalid Data. Failed to Create Account.',
         };
     }
-    const { username, email, password } = validateFields.data;
+    const { fullname, email, password } = validateFields.data;
     const user = await fetchUserByEmail(email);
     /* Check for dupe account first */
     if (user) {
         return {
             message: 'Account Exists. Failed to Create Account.',
+            errors: {},
         };
      }
 

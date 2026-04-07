@@ -12,7 +12,7 @@ export type UserTable = {
 };
 
 export type UserProfile = {
-    name: string;
+    fullname: string;
     email: string;
     phone: string;
     address: string;

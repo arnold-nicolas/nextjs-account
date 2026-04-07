@@ -41,12 +41,12 @@ export function LoginForm() {
 export function SignUpForm() {
     const initialState: State = { message: null, errors: {} };
     const [state, formAction] = useActionState(createAccount, initialState);
-    return (
+     return (
         <form action={formAction}>
             <div className="relative mb-2">
                 <input
                     type="text"
-                    name="username"
+                    name="fullname"
                     id="floating_name_outlined"
                     className="block px-2.5 pb-2.5 pt-4 w-full text-[#1a202c] text-sm text-heading bg-transparent rounded-md border border-solid border-[#d1d5db] border-1 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand peer"
                     placeholder=" "
@@ -56,8 +56,8 @@ export function SignUpForm() {
                 </label>
             </div>
             <div id="user-error" aria-live="polite" aria-atomic="true">
-                {state.errors?.username &&
-                 state.errors.username.map((error:string) => (
+                {state.errors?.fullname &&
+                 state.errors.fullname.map((error:string) => (
                     <p className="text-sm text-red-500" key={error}>
                         {error}
                     </p>
@@ -99,11 +99,12 @@ export function SignUpForm() {
             <div id="user-error" aria-live="polite" aria-atomic="true">
                 {state.errors?.password &&
                  state.errors.password.map((error:string) => (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-red-500" key={error}>
                         {error}
                     </p>
                  ))}
             </div>
+            <p className='mt-2 text-sm text-red-500' key={state.message}>{state.message}</p>
             <SubmitButton type="submit">Sign Up</SubmitButton>
         </form>
     );
