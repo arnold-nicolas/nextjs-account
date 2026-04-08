@@ -1,5 +1,14 @@
 import Link from "next/link";
 
+/**
+ * The `CardHeader` function in TypeScript React renders a card header with a main text and subtext.
+ *
+ * @param {string} text - Represents the main header text to display in the module.
+ * @param {string} subtext - Represents the header's sub text to display in the module.
+ *
+ * @returns A `CardHeader` component is being returned, which consists of a div element with a title
+ * (h2) and a subtext (p) inside it. The title and subtext are passed as props to the component.
+ */
 export function CardHeader({
     text,
     subtext
@@ -15,6 +24,16 @@ export function CardHeader({
     );
 }
 
+e/**
+ * The CardFooter component in TypeScript React renders a text with a link in a card footer design.
+ *
+ * @param {string} text - Represents the main footer text to display in the module.
+ * @param {string} link - Sets the HREF link of the text.
+ * @param {string} linktext - Represents the text of the link to display in the module.
+ *
+ * @returns A JSX element representing the CardFooter component is being returned. The paragraph
+ * element contains the provided text and a Link component with the specified link and link text.
+ */
 export function CardFooter({
     text,
     link,

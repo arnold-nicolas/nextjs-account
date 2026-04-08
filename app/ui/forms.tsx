@@ -5,6 +5,14 @@ import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { createAccount, State } from "@/app/lib/user";
 import { useActionState } from "react";
 
+/**
+ * The `LoginForm` function in TypeScript React renders a form with email and password input fields
+ * along with a submit button for signing in.
+ *
+ * @returns The `LoginForm` function is returning a JSX element representing a form with two input
+ * fields for email and password, along with corresponding labels. The form also includes a submit
+ * button labeled "Sign In".
+ */
 export function LoginForm() {
     return (
         <form>
@@ -38,6 +46,12 @@ export function LoginForm() {
     );
 }
 
+/**
+ * The above code is a TypeScript React component for a sign-up form. It includes input fields for the
+ * user's full name, email address, and password. The form handles validation errors for each input
+ * field and displays error messages if there are any. It also displays a general message related to
+ * the sign-up process.
+ */
 export function SignUpForm() {
     const initialState: State = { message: null, errors: {} };
     const [state, formAction] = useActionState(createAccount, initialState);

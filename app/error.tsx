@@ -2,6 +2,18 @@
  
 import { useEffect } from 'react';
  
+/**
+ * The Error component in TypeScript React displays an error message and provides an option to reset
+ * and try again.
+ *
+ * @param {Error} error - error Object.
+ * @param {} reset
+ *
+ * @returns The `Error` component is being returned. It displays a message "Something went wrong!" and
+ * a button labeled "Try again" that, when clicked, calls the `reset` function to attempt to recover by
+ * re-rendering the invoices route. The component also logs the error to the console using
+ * `console.error(error)` within a `useEffect` hook.
+ */
 export default function Error({
   error,
   reset,

@@ -48,6 +48,17 @@ const defaultUserData = [
 ];
 const db = getPool();
 
+/**
+ * This TypeScript function fetches user information by ID from a database and returns the user's name,
+ * email, phone, and formatted address.
+ *
+ * @param {string} id - fetches user data from a database based on the provided `id`.
+ * The function connects to the database, queries the user information based on the `id`.
+ *
+ * @returns an object with the properties `name`, `email`, and `address`.
+ * The `address` property is a concatenated string of the `address`, `city`, `state`, and `zip` fields
+ * from the database, separated by `<br />` and `,`.
+ */
 export async function fetchUserById(id: string) {
     const client = await db.connect();
     try {
@@ -63,6 +74,15 @@ export async function fetchUserById(id: string) {
     }
 }
 
+/**
+ * The function fetches a user's ID from the database based on their email address.
+ *
+ * @param {string} email - retrieves a user's ID from the database based on their email address.
+ *
+ * @returns either the user object with the `id` property if the user with the specified email is
+ * found in the database, or an object with a `message` property indicating a database error if
+ * there was an issue fetching the user.
+ */
 export async function fetchUserByEmail(email: string) {
     const client = await db.connect();
     try {
@@ -77,6 +97,21 @@ export async function fetchUserByEmail(email: string) {
     }
 }
 
+/**
+ * The function `createAccount` handles the creation of a new user account by validating form data,
+ * checking for duplicate accounts, hashing the password, and inserting user details into a database.
+ *
+ * @param {State} prevState - represents the previous state of the application or the state before the
+ * account creation process.
+ * @param {FormData} formData - contains user input data from a form submission. It is used to extract
+ * values for the `fullname`, `email`, and `password` fields needed to create a new user account.
+ *
+ * @returns a Promise that resolves to a `State` object. The `State` object contains either validation
+ * errors and a message if the form validation fails, or a success message if the account creation is
+ * successful. If a user with the same email already exists, it returns a message indicating that the
+ * account creation failed. If there is an error during the database operation, it returns an error
+ * message.
+ */
 export async function createAccount(prevState: State, formData: FormData): Promise<State> {
     const validateFields = CreateAccount.safeParse({
         fullname: formData.get('fullname'),

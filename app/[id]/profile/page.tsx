@@ -3,6 +3,18 @@ import Profile from '@/app/ui/profileview';
 import { notFound } from 'next/navigation';
 import { fetchUserById } from '@/app/lib/user';
 
+/**
+ * This TypeScript React function fetches a user by ID, displays their profile information, and handles
+ * cases where the user is not found.
+ *
+ * @param props - The `props` parameter in the `Page` function is an object with a single property
+ * `params`, which is a Promise that resolves to an object with an `id` property of type string.
+ *
+ * @returns The `Page` function is returning JSX elements that represent a user profile page. The page
+ * includes a main container with a user profile section inside a div element. The user profile section
+ * displays the user's information fetched by the `fetchUserById` function. If the user is not found
+ * (user[0] is undefined), the `notFound` function is called.
+ */
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
     const id = params.id;

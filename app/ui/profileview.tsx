@@ -1,6 +1,19 @@
 import { fetchUserById } from '@/app/lib/user';
 import { UserProfile } from "@/app/lib/server/definitions";
 
+/**
+ * The function `ProfileView` is a React component that displays user profile information in a
+ * formatted way.
+ *
+ * @param {UserProfile} user - takes a prop `user` which is an array of `UserProfile` objects.
+ * Inside the component, it maps over the `user` array and renders a definition list (`dl`) for
+ * each `UserProfile` object.
+ *
+ * @returns The `ProfileView` function is being returned. It is a React component that takes a prop
+ * `user` which is an array of `UserProfile` objects. Inside the component, it maps over the `user`
+ * array and renders a list of key-value pairs for each `UserProfile` object. The keys are formatted to
+ * have the first letter capitalized, and the values are displayed in a grid layout with
+ */
 export default async function ProfileView({user}: {user: UserProfile[]}) {
   const formatKey = (key: string) =>
   key.charAt(0).toUpperCase() + key.slice(1);  

@@ -3,6 +3,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 }
 
+/**
+ * This function is a SubmitButton component in TypeScript React that renders a styled button with
+ * dynamic children and props.
+ *
+ * @param {ReactNode} children - represents the children prop.
+ * @param rest - collects all additional arguments into an array.
+ *
+ * @returns a button element with the following attributes and styles:
+ */
 export default function SubmitButton({ children, ...rest }: ButtonProps) {
     return (
         <button 
