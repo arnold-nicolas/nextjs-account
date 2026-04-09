@@ -6,6 +6,7 @@ import { UserProfile } from "@/app/lib/server/definitions";
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
+//import { SignJWT } from 'jose';
 
 export type State = {
     errors?: {
@@ -37,6 +38,7 @@ const User = z.object({
     date: z.string(),
 });
 const CreateAccount = User.omit({ id: true, date: true });
+const UserLogin = User.omit({ id: true, fullname: true, date: true });
 
 const defaultUserData = [
     {
@@ -162,5 +164,30 @@ export async function createAccount(prevState: State, formData: FormData): Promi
         client.release();
     }
 
+    redirect(`/${id}/profile`);
+}
+
+export async function doLogin(prevState: State, formData: FormData): Promise<State> {
+    const validateFields = UserLogin.safeParse({
+        email: formData.get("email"),
+        password: formData.get("password"),
+    });
+
+    // If form validation fails, return errors early. Otherwise, continue.
+    if (!validateFields.success) {
+        const err = z.treeifyError(validateFields.error).properties;
+        return {
+            errors: {
+                email: err?.email?.errors,
+                password:err?.password?.errors,
+            },
+            message: 'Invalid Data. Failed to Login User.',
+        };
+    }
+    const { email, password } = validateFields.data;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    //let id = '';
+
+    let id = "446e56a0-7f4a-4ece-bb7d-86c3ac4742e7";
     redirect(`/${id}/profile`);
 }
