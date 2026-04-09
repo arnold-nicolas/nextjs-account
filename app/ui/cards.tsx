@@ -24,7 +24,7 @@ export function CardHeader({
     );
 }
 
-e/**
+/**
  * The CardFooter component in TypeScript React renders a text with a link in a card footer design.
  *
  * @param {string} text - Represents the main footer text to display in the module.
