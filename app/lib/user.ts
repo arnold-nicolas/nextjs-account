@@ -88,7 +88,7 @@ export async function fetchUserById(id: string) {
 export async function fetchUserByEmail(email: string) {
     const client = await db.connect();
     try {
-        const res = await client.query('select id from users where email = $1', [email]);
+        const res = await client.query('select id, password from users where email = $1', [email]);
         return res.rows[0];
     } catch (error) {
         return {
@@ -167,6 +167,21 @@ export async function createAccount(prevState: State, formData: FormData): Promi
     redirect(`/${id}/profile`);
 }
 
+/**
+ * The function `doLogin` handles user login by validating form data, fetching user information, and
+ * redirecting to the user's profile page if login is successful.
+ *
+ * @param {State} prevState - represents the previous state of the application or the state before the
+ * account creation process.
+ * @param {FormData} formData - contains user input data from a form submission. It is used to extract
+ * values for the `email`, and `password` fields needed to log the user in.
+ *
+ * @returns The `doLogin` function returns a Promise that resolves to a `State` object. The `State`
+ * object contains either error messages and validation errors if the form validation fails, or a
+ * success message and empty errors object if the login is successful. If the form validation fails, it
+ * returns the specific errors for email and password fields. If the login is successful, it redirects
+ * the user to the profile
+ */
 export async function doLogin(prevState: State, formData: FormData): Promise<State> {
     const validateFields = UserLogin.safeParse({
         email: formData.get("email"),
@@ -181,13 +196,19 @@ export async function doLogin(prevState: State, formData: FormData): Promise<Sta
                 email: err?.email?.errors,
                 password:err?.password?.errors,
             },
-            message: 'Invalid Data. Failed to Login User.',
+            message: 'Invalid email/password. Please try again.',
         };
     }
-    const { email, password } = validateFields.data;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    //let id = '';
 
-    let id = "446e56a0-7f4a-4ece-bb7d-86c3ac4742e7";
+    const { email, password } = validateFields.data;
+    const user = await fetchUserByEmail(email);
+    if (!user || !await bcrypt.compare(password, user['password'])) {
+        return {
+            message: 'Invalid email/password. Please try again.',
+            errors: {},
+        };
+    }
+
+    let id = user['id'];
     redirect(`/${id}/profile`);
 }
