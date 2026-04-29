@@ -17,3 +17,8 @@ export type UserProfile = {
     phone: string;
     address: string;
 }
+
+export type SessionPayload = {
+    id: string;
+    expiresAt: Date;
+}

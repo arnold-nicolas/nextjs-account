@@ -1,12 +1,12 @@
 'use server';
 
 import { getPool } from "@/app/lib/server/db";
+import { setSessionId } from "@/app/lib/server/session";
 import { UserProfile } from "@/app/lib/server/definitions";
 
 import { z } from 'zod';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
-//import { SignJWT } from 'jose';
 
 export type State = {
     errors?: {
@@ -164,6 +164,7 @@ export async function createAccount(prevState: State, formData: FormData): Promi
         client.release();
     }
 
+    await setSessionId(id);
     redirect(`/${id}/profile`);
 }
 
@@ -210,5 +211,6 @@ export async function doLogin(prevState: State, formData: FormData): Promise<Sta
     }
 
     let id = user['id'];
+    await setSessionId(id);
     redirect(`/${id}/profile`);
 }

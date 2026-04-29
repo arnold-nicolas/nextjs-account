@@ -6,7 +6,6 @@ import { createAccount, doLogin, State } from "@/app/lib/user";
 import { useActionState } from "react";
 import { error } from "console";
 
-
 export function LoginForm() {
     const initialState: State = { message: null, errors: {} };
     const [state, formAction] = useActionState(doLogin, initialState);
